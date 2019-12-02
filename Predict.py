@@ -18,40 +18,20 @@ def outputJson(input_file_path, output_file_path):
     myData=[]
     for document in data:
         text=document['text']
-        H0=document['H0']
-        H1=document['H1']
         i=0
         sentence=""
-        categ="None"
-        entities=[]
         while(i<len(text)):
-            if(len(sentence)==0):
-                start_index=0
-            else:
-                start_index=len(sentence)
-            if(H0[i]==1):
-                entities.append([start_index,start_index+len(text[i])-1,"H0"])
-                if(categ!="H0"):
-                    #categ='Priv'
-                    categ='H0'
-            if(H1[i]==1 and H0[i]==0):
-                entities.append([start_index,start_index+len(text[i]),"H1"])
-                if(categ!="H1" and categ!="H0"):
-                    #categ='Priv'
-                    categ='H1'
             sentence=sentence+text[i]+" "
             if('.' in text[i]):
-                myData.append([sentence,categ,entities])
+                myData.append([sentence])
                 sentence=""
-                categ="None"
-                entities=[]
             i+=1
 
 
     # ### STEP3: Writing into a csv file
     import pandas as pd
     my_df = pd.DataFrame(myData)
-    my_df.columns=['Sentence', 'Category', 'Spacy']
+    my_df.columns=['Sentence']
     my_df.to_csv('Test/test.csv', index=False)
 
 
